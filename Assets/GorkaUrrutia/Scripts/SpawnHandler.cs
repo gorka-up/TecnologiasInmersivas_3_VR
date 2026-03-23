@@ -2,15 +2,20 @@ using UnityEngine;
 
 public class SpawnHandler : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    GameObject block;
+
+    float offsetRange = 5;
+
+    Vector3 spawnPos;
+
     void Start()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    void SpawnBlocks()
     {
-        
+        float offSet = Random.Range(-offsetRange, offsetRange);
+        Vector3 direction = (new Vector3(Camera.main.transform.position.x + offSet, Camera.main.transform.position.y, Camera.main.transform.position.z) -  spawnPos).normalized;
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,11 +13,16 @@ public class GameManager : MonoBehaviour
         Medium,
         Hard
     }
+
     [Header("Difficulty")]
     [SerializeField]
     public Difficulty actualDifficulty;
 
-    public Canvas canvas;
+    public int points;
+    public Canvas cameraCanvas;
+    public TextMeshProUGUI pointTMP;
+
+    public Canvas worldCanvas;
     public Button easyButton, mediumButton, hardButton;
 
     private void Awake()
@@ -54,5 +60,11 @@ public class GameManager : MonoBehaviour
         easyButton.colors.Equals(Color.gray);
         mediumButton.colors.Equals(Color.gray);
         hardButton.colors.Equals(Color.red);
+    }
+
+    public void AddPoint()
+    {
+        points = points + 1;
+        pointTMP.text = points.ToString();
     }
 }
