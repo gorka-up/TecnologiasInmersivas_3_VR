@@ -1,5 +1,6 @@
 using System;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     public int points;
+    public int objetivePoints = 20;
     public Canvas cameraCanvas;
     public TextMeshProUGUI pointTMP;
     public TextMeshProUGUI countDownTMP;
@@ -24,18 +26,19 @@ public class GameManager : MonoBehaviour
     }
 
     void Start()
-    {
+    {   
+        //Recibir datos de las opciones
         spawnHandler.Easy();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        spawnHandler.SpawnBlocks();
+        //Spawn blocks
     }
 
-    public void AddPoint()
+    public void AddPoint(int point)
     {
-        points = points + 1;
-        pointTMP.text = points.ToString();
+        points = points + point;
+        //pointTMP.text = points.ToString(); CAMBIARLO A MENU IN WORLD
     }
 }

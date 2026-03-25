@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 322255866144529301}
   - component: {fileID: 7491987155934581488}
   m_Layer: 6
-  m_Name: Block
+  m_Name: BadBlock
   m_TagString: Block
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -68,7 +68,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7135bf8cd48d7004eb50310b9feee31d, type: 2}
+  - {fileID: 2100000, guid: 24cd6ab9e43ae7344b2a1a4aefd5d036, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

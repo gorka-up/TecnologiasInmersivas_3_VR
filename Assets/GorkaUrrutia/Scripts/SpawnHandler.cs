@@ -4,18 +4,26 @@ using static GameManager;
 
 public class SpawnHandler : MonoBehaviour
 {
-    [SerializeField] GameObject block;
+    [Header("Type of Blocks")]
+    [SerializeField] GameObject normalBlock;
+    [SerializeField] GameObject badBlock;
 
-    float offsetRange = 6;
-    float spawnDistance = 10f;
+    [Header("Spawn parameters")]
+    [SerializeField] public float offsetRange;
+    [SerializeField] public float spawnDistance;
 
-    float speed = 5f;
-    float genTime = 2.0f;
+    [Header("Block Spawn Parameters")]
+    [SerializeField] public float speed;
+    [SerializeField] public float genTime;
 
-    float accumTime = 0.0f;
+    private float accumTime;
 
-    bool start = false;
+    private bool start = false;
 
+    private void Start()
+    {
+        accumTime = 0.0f;
+    }
     public void SpawnBlocks()
     {
         if (start)
@@ -23,36 +31,41 @@ public class SpawnHandler : MonoBehaviour
             accumTime += Time.deltaTime;
             while (accumTime >= genTime)
             {
-                Transform cam = Camera.main.transform;
-
-                float offset = Random.Range(-offsetRange, offsetRange);
-
-                Vector3 forward = cam.forward;
-                forward.y = 0;
-                forward.Normalize();
-
-                Vector3 spawnPos = cam.position + forward * spawnDistance;
-
-                spawnPos += cam.right * offset;
-                spawnPos.y = cam.position.y;
-
-                GameObject cloneBlock = Instantiate(block, spawnPos, Quaternion.identity);
-
-                Vector3 dir = cam.position - spawnPos;
-                dir.y = 0;
-                dir.Normalize();
-
-                cloneBlock.GetComponent<Rigidbody>().linearVelocity = dir * speed;
-
-                StartCoroutine(DestroyMyBlock(cloneBlock));
+                SpawnBlock(normalBlock);
                 accumTime -= genTime;
             }
         }
     }
 
-    IEnumerator DestroyMyBlock(GameObject block)
+    public void SpawnBlock(GameObject block)
     {
-        yield return new WaitForSeconds(6);
+        Transform cam = Camera.main.transform;
+
+        float offset = Random.Range(-offsetRange, offsetRange);
+
+        Vector3 forward = cam.forward;
+        forward.y = 0;
+        forward.Normalize();
+
+        Vector3 spawnPos = cam.position + forward * spawnDistance;
+
+        spawnPos += cam.right * offset;
+        spawnPos.y = cam.position.y;
+
+        GameObject cloneBlock = Instantiate(block, spawnPos, Quaternion.identity);
+
+        Vector3 dir = cam.position - spawnPos;
+        dir.y = 0;
+        dir.Normalize();
+
+        cloneBlock.GetComponent<Rigidbody>().linearVelocity = dir * speed;
+
+        StartCoroutine(DestroyMyBlock(cloneBlock));
+    }
+
+    IEnumerator DestroyMyBlock(GameObject block, int time = 8)
+    {
+        yield return new WaitForSeconds(time);
         if (block != null ) Destroy(block);
     }
 
@@ -63,23 +76,23 @@ public class SpawnHandler : MonoBehaviour
 
     IEnumerator SetStart()
     {
-
+        WaitForSeconds wait = new WaitForSeconds(1);
         if (start)
         {
             start = !start;
         }
-        yield return new WaitForSeconds(1);
+        yield return wait;
         GameManager.instance.countDownTMP.gameObject.SetActive(true);
         GameManager.instance.countDownTMP.text = "5";
-        yield return new WaitForSeconds(1);
+        yield return wait;
         GameManager.instance.countDownTMP.text = "4";
-        yield return new WaitForSeconds(1);
+        yield return wait;
         GameManager.instance.countDownTMP.text = "3";
-        yield return new WaitForSeconds(1);
+        yield return wait;
         GameManager.instance.countDownTMP.text = "2";
-        yield return new WaitForSeconds(1);
+        yield return wait;
         GameManager.instance.countDownTMP.text = "1";
-        yield return new WaitForSeconds(1);
+        yield return wait;
         GameManager.instance.countDownTMP.gameObject.SetActive(false);
         start = !start;
     }

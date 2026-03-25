@@ -2,7 +2,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class BlockHandler : MonoBehaviour
+public class BadBlockHandler : MonoBehaviour
 {
     [SerializeField] AudioClip sound;
 
@@ -11,7 +11,7 @@ public class BlockHandler : MonoBehaviour
         if (collision.gameObject.CompareTag("Sword"))
         {
             AudioSource.PlayClipAtPoint(sound, transform.position);
-            GameManager.instance.AddPoint(1);
+            GameManager.instance.AddPoint(-1);
             Destroy(gameObject);
         }
     }
