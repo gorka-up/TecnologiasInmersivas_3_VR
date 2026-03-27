@@ -1,7 +1,8 @@
 using UnityEngine;
 
-public class ButtonPress : MonoBehaviour
+public class MenuController : MonoBehaviour
 {
+    private int neededPoints;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -13,8 +14,9 @@ public class ButtonPress : MonoBehaviour
     {
         
     }
-    public void ClickBoton()
+
+    public void ChangeNeededPoints()
     {
-        print("HOla");
+
     }
 }
