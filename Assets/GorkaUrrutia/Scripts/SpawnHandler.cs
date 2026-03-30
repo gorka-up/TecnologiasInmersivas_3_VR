@@ -18,22 +18,38 @@ public class SpawnHandler : MonoBehaviour
 
     private float accumTime;
 
-    private bool start = false;
-
     private void Start()
     {
         accumTime = 0.0f;
+        GetDificulty();
     }
     public void SpawnBlocks()
     {
-        if (start)
+        accumTime += Time.deltaTime;
+        while (accumTime >= genTime)
         {
-            accumTime += Time.deltaTime;
-            while (accumTime >= genTime)
+            switch (PlayerPrefs.GetInt("selectedLevel"))
             {
-                SpawnBlock(normalBlock);
-                accumTime -= genTime;
+                case 1:
+                    SpawnBlock(normalBlock);
+                    break;
+                case 2:
+                    float random = Random.value;
+
+                    if (random < 0.8f)
+                    {
+                        SpawnBlock(normalBlock);
+                    }
+                    else
+                    {
+                        SpawnBlock(badBlock);
+                    }
+                    break;
+                default:
+                    SpawnBlock(normalBlock);
+                    break;
             }
+            accumTime -= genTime;
         }
     }
 
@@ -69,59 +85,30 @@ public class SpawnHandler : MonoBehaviour
         if (block != null ) Destroy(block);
     }
 
-    public void Ready()
+    public void GetDificulty()
     {
-        StartCoroutine(SetStart());
-    }
-
-    IEnumerator SetStart()
-    {
-        WaitForSeconds wait = new WaitForSeconds(1);
-        if (start)
+        switch (PlayerPrefs.GetInt("dificulty"))
         {
-            start = !start;
+            case 0:
+                speed = 5;
+                genTime = 2.0f;
+                offsetRange = 6;
+                break;
+            case 1:
+                speed = 6;
+                genTime = 1.0f;
+                offsetRange = 8;
+                break;
+            case 2:
+                speed = 7;
+                genTime = 0.5f;
+                offsetRange = 10;
+                break;
+            default:
+                speed = 5;
+                genTime = 2.0f;
+                offsetRange = 6;
+                break;
         }
-        yield return wait;
-        GameManager.instance.countDownTMP.gameObject.SetActive(true);
-        GameManager.instance.countDownTMP.text = "5";
-        yield return wait;
-        GameManager.instance.countDownTMP.text = "4";
-        yield return wait;
-        GameManager.instance.countDownTMP.text = "3";
-        yield return wait;
-        GameManager.instance.countDownTMP.text = "2";
-        yield return wait;
-        GameManager.instance.countDownTMP.text = "1";
-        yield return wait;
-        GameManager.instance.countDownTMP.gameObject.SetActive(false);
-        start = !start;
-    }
-
-    public void Easy()
-    {
-        speed = 5;
-        genTime = 2.0f;
-        offsetRange = 6;
-        GameManager.instance.easyButton.colors.Equals(Color.green);
-        GameManager.instance.mediumButton.colors.Equals(Color.gray);
-        GameManager.instance.hardButton.colors.Equals(Color.gray);
-    }
-    public void Medium()
-    {
-        speed = 6;
-        genTime = 1.0f;
-        offsetRange = 8;
-        GameManager.instance.easyButton.colors.Equals(Color.gray);
-        GameManager.instance.mediumButton.colors.Equals(Color.yellow);
-        GameManager.instance.hardButton.colors.Equals(Color.gray);
-    }
-    public void Hard()
-    {
-        speed = 7;
-        genTime = 0.5f;
-        offsetRange = 10;
-        GameManager.instance.easyButton.colors.Equals(Color.gray);
-        GameManager.instance.mediumButton.colors.Equals(Color.gray);
-        GameManager.instance.hardButton.colors.Equals(Color.red);
     }
 }

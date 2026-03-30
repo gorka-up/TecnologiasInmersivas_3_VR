@@ -9,36 +9,25 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     public int points;
-    public int objetivePoints = 20;
-    public Canvas cameraCanvas;
-    public TextMeshProUGUI pointTMP;
-    public TextMeshProUGUI countDownTMP;
-
-
-    public Canvas worldCanvas;
-    public Button easyButton, mediumButton, hardButton, startButton;
+    public int objetivePoints;
 
     [SerializeField] SpawnHandler spawnHandler;
+
+    [SerializeField] public TextMeshProUGUI point_Text;
 
     private void Awake()
     {
         instance = this;
     }
 
-    void Start()
-    {   
-        //Recibir datos de las opciones
-        spawnHandler.Easy();
-    }
-
     private void FixedUpdate()
     {
-        //Spawn blocks
+        spawnHandler.SpawnBlocks();
     }
 
     public void AddPoint(int point)
     {
         points = points + point;
-        //pointTMP.text = points.ToString(); CAMBIARLO A MENU IN WORLD
+        point_Text.text = points.ToString();
     }
 }

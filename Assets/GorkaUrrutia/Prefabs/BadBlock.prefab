@@ -124,6 +124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sound: {fileID: 8300000, guid: aa6c7990f3dc6044a96b4e46846d49a4, type: 3}
+  points: -1
 --- !u!54 &322255866144529301
 Rigidbody:
   m_ObjectHideFlags: 0
