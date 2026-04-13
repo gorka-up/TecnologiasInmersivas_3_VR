@@ -7,6 +7,11 @@ public class SpawnHandler : MonoBehaviour
     [Header("Type of Blocks")]
     [SerializeField] GameObject normalBlock;
     [SerializeField] GameObject badBlock;
+    [SerializeField] GameObject upBlock;
+    [SerializeField] GameObject downBlock;
+    [SerializeField] GameObject leftBlock;
+    [SerializeField] GameObject rigthBlock;
+
 
     [Header("Spawn parameters")]
     [SerializeField] public float offsetRange;
@@ -28,32 +33,71 @@ public class SpawnHandler : MonoBehaviour
         accumTime += Time.deltaTime;
         while (accumTime >= genTime)
         {
-            switch (PlayerPrefs.GetInt("selectedLevel"))
-            {
-                case 1:
-                    SpawnBlock(normalBlock);
-                    break;
-                case 2:
-                    float random = Random.value;
+            float random = Random.value;
 
-                    if (random < 0.8f)
-                    {
-                        SpawnBlock(normalBlock);
-                    }
-                    else
-                    {
-                        SpawnBlock(badBlock);
-                    }
-                    break;
-                default:
-                    SpawnBlock(normalBlock);
-                    break;
+            if (random < 0.8f)
+            {
+                GenerateBlock(normalBlock);
+            }
+            else
+            {
+                GenerateBlock(badBlock);
             }
             accumTime -= genTime;
         }
     }
 
-    public void SpawnBlock(GameObject block)
+    public  void SpawnBlocks2()
+    {
+        accumTime += Time.deltaTime;
+        while (accumTime >= genTime)
+        {
+            float random = Random.value;
+
+            if (random < 0.65f)
+            {
+                GenerateBlock(normalBlock);
+            }
+            else
+            {
+                GenerateBlock(badBlock);
+            }
+            accumTime -= genTime;
+        }
+    }
+
+    public void SpawnBlocks3()
+    {
+        accumTime += Time.deltaTime;
+        while (accumTime >= genTime)
+        {
+            float random = Random.value;
+
+            if (random < 0.27f)
+            {
+                GenerateBlock(badBlock);
+            }
+            else if (random < 0.27f)
+            {
+                GenerateBlock(upBlock);
+            }
+            else if (random < 0.52f)
+            {
+                GenerateBlock(downBlock);
+            }
+            else if (random < 0.77f)
+            {
+                GenerateBlock(leftBlock);
+            }
+            else
+            {
+                GenerateBlock(rigthBlock);
+            }
+            accumTime -= genTime;
+        }
+    }
+
+    public void GenerateBlock(GameObject block)
     {
         Transform cam = Camera.main.transform;
 
@@ -70,6 +114,8 @@ public class SpawnHandler : MonoBehaviour
 
         GameObject cloneBlock = Instantiate(block, spawnPos, Quaternion.identity);
 
+        cloneBlock.transform.LookAt(cam.position);
+
         Vector3 dir = cam.position - spawnPos;
         dir.y = 0;
         dir.Normalize();
@@ -79,7 +125,7 @@ public class SpawnHandler : MonoBehaviour
         StartCoroutine(DestroyMyBlock(cloneBlock));
     }
 
-    IEnumerator DestroyMyBlock(GameObject block, int time = 8)
+    IEnumerator DestroyMyBlock(GameObject block, int time = 10)
     {
         yield return new WaitForSeconds(time);
         if (block != null ) Destroy(block);
@@ -93,21 +139,25 @@ public class SpawnHandler : MonoBehaviour
                 speed = 5;
                 genTime = 2.0f;
                 offsetRange = 6;
+                spawnDistance = 10;
                 break;
             case 1:
                 speed = 6;
-                genTime = 1.0f;
+                genTime = 1.5f;
                 offsetRange = 8;
+                spawnDistance = 10;
                 break;
             case 2:
-                speed = 7;
-                genTime = 0.5f;
+                speed = 6;
+                genTime = 1f;
                 offsetRange = 10;
+                spawnDistance = 10;
                 break;
             default:
                 speed = 5;
                 genTime = 2.0f;
                 offsetRange = 6;
+                spawnDistance = 10;
                 break;
         }
     }

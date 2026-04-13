@@ -2,6 +2,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MenuController : MonoBehaviour
 {
@@ -14,10 +15,16 @@ public class MenuController : MonoBehaviour
 
     [SerializeField] public GameObject maxHealth_Dropbox;
 
+    [SerializeField] public Dropdown health_Dropbox;
+
+    [SerializeField] public Slider Slider;
+
+    [SerializeField] public Text txtOptions;
+
     private int dificulty = 0;
     private int neededPoints = 20;
     private bool health = false;
-    private int maxHealth = 0;
+    private int maxHealth = 5;
     private bool dualSable = true;
     private bool isRightSable = false;
 
@@ -56,6 +63,8 @@ public class MenuController : MonoBehaviour
         }
 
         points_Text.text = neededPoints.ToString();
+
+        txtOptions.text = "LEVEL " +levelSelected + " OPTIONS";
     }
 
     public void SetEasy()
@@ -74,9 +83,9 @@ public class MenuController : MonoBehaviour
         print(dificulty);
     }
 
-    public void SetMaxPoints(int points)
+    public void SetMaxPoints()
     {
-        neededPoints = points;
+        neededPoints = (int)Slider.value;
         print(neededPoints);
     }
 
@@ -86,9 +95,19 @@ public class MenuController : MonoBehaviour
         print(health);
     }
 
-    public void SetMaxHealth(int hp)
+    public void SetMaxHealth()
     {
-        maxHealth = hp;
+        if (health_Dropbox.value == 0)
+        {
+            maxHealth = 5;
+        }else if (health_Dropbox.value == 1)
+        {
+            maxHealth = 3;
+        }
+        else
+        {
+            maxHealth = 1;
+        }
         print(maxHealth);
     }
     public void SetDualSable()
@@ -111,28 +130,14 @@ public class MenuController : MonoBehaviour
     public void GoToLevel()
     {
         SaveData();
-        switch (levelSelected) {
-            case 1:
-                PlayerPrefs.SetInt("selectedLevel", levelSelected);
-                SceneManager.LoadScene("Level1");
-                break;
-
-            case 2:
-                PlayerPrefs.SetInt("selectedLevel", levelSelected);
-                SceneManager.LoadScene("Level2");
-                break;
-
-            default:
-                PlayerPrefs.SetInt("selectedLevel", 1);
-                SceneManager.LoadScene("Level1");
-                break;
-        }
+        SceneManager.LoadScene("Level"+ levelSelected);
     }
 
     public void SaveData()
     {
         PlayerPrefs.SetInt("dificulty", dificulty);
         PlayerPrefs.SetInt("maxPoints", neededPoints);
+        PlayerPrefs.SetInt("levelSelected", levelSelected);
         if (health)
         {
             PlayerPrefs.SetInt("health", 1);
